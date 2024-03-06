@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./src/prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id String @id @default(uuid())
+  username String @unique
+  password String
+  firstname String
+  lastname String
+  idCard String? @unique
+  email String? @unique
+  address String?
+  image_user String?
+  phone String?
+  role String @default("users")
+  create_date DateTime @default(now())
+  update_date DateTime @updatedAt
+  bookings Bookings[]
+}
+
+model Parks {
+  id String @id @default(uuid())
+  name_park String
+  image_park String?
+  active Boolean @default(false)
+  create_date DateTime @default(now())
+  update_date DateTime @updatedAt
+  bookings Bookings[]
+}
+
+model Bookings {
+  id String @id @default(uuid())
+  detail String 
+  status String @default("draft")
+  start_date DateTime
+  end_date DateTime
+  booking_by String
+  created_by String
+  user_created Users @relation(fields: [created_by], references: [id])
+  parking_id String
+  parkings Parks @relation(fields: [parking_id], references: [id])
+  create_date DateTime @default(now())
+  update_date DateTime @updatedAt
+  payments Payments?
+}
+
+model Payments {
+  id String @id @default(uuid())
+  status_payment String @default("draft-payment")
+  count Int
+  deposit Int?
+  remian Int?
+  bookings Bookings @relation(fields: [booking_id], references: [id])
+  booking_id String @unique
+  create_date DateTime @default(now())
+  update_date DateTime @updatedAt
+  slipPayment SlipPayment[]
+}
+
+model SlipPayment {
+  id String @id @default(uuid())
+  count Int
+  image String
+  detail String?
+  payment_id String
+  payments Payments @relation(fields: [payment_id], references: [id])
+  create_date DateTime @default(now())
+  update_date DateTime @updatedAt
+}
