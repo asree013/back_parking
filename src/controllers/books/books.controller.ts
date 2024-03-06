@@ -12,7 +12,6 @@ import { Bookings } from 'prisma/src/prisma/client';
 import { controllers } from 'src/constants/controller';
 import { service } from 'src/constants/service';
 import { IBaseController } from 'src/interfaces/Ibase_controller';
-import { DateSearch } from 'src/models/date';
 import { BooksService } from 'src/service/books/books.service';
 
 @Controller(controllers.book)

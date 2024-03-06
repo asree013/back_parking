@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Bookings, PrismaClient } from 'prisma/src/prisma/client';
-
+import { Bookings, PrismaClient } from 'prisma/src/prisma/client/edge';
 import { service } from 'src/constants/service';
 import { IBaseRepo } from 'src/interfaces/Ibase_repo';
 
@@ -66,8 +65,18 @@ export class RepoBooksService implements IBaseRepo<Bookings> {
     }
   }
   create(item: Bookings): Promise<Bookings> {
+    const data = {} as Bookings
+    data.booking_by = item.booking_by
+    data.detail = item.detail
+    data.end_date = new Date(item.end_date)
+    data.start_date = new Date(item.start_date)
+    data.parking_id = item.parking_id
+    data.created_by = item.created_by
+
+    console.log(data);
+    
     try {
-      return this.db.bookings.create({ data: item });
+      return this.db.bookings.create({ data: data });
     } catch (error) {
       throw error;
     }
