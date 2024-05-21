@@ -8,7 +8,7 @@ export class ConnectDbService
 {
   onModuleInit() {
     this.$connect()
-      .then((r) => console.log('Cconnected Databse'))
+      .then((r) => console.log('Connected Databse'))
       .catch((err) => console.log({ err: err }));
   }
   onModuleDestroy() {
